@@ -20,7 +20,6 @@ export const UserResolvers: IResolvers = {
       }
     },
     async updateProfile(_: void, args: MutationUpdateProfileArgs): Promise<ProfileResponse> {
-      console.log({ _, args })
       let response = await AdminService.createProfile(args)
       let newObj: ProfileResponse = Object.assign({}, response.toObject());
       return newObj
