@@ -1,12 +1,21 @@
 import { AdminModel } from "../entities/Admin";
-import { MutationUpdateProfileArgs, QueryProfileArgs } from "../graphql/generated/graphql";
+import { errorName, errorType } from "../errorHandling/Constants";
+import { MutationUpdateProfileArgs, ProfileResponse, QueryProfileArgs } from "../graphql/generated/graphql";
 
 class AdminService {
-    async getProfile(args: QueryProfileArgs) {
-        return await AdminModel.findById(args.id)
+    async getProfile(args: QueryProfileArgs): Promise<ProfileResponse | Error> {
+        let profile = await AdminModel.findById(args.id)
+        if (!profile) {
+            return new Error(errorName.NOT_FOUND)
+        }
+        let profileDto: ProfileResponse = Object.assign({}, profile?.toObject());
+        return profileDto
     }
-    async createProfile(args: MutationUpdateProfileArgs) {
-        return await AdminModel.create({ ...args })
+
+    async createProfile(args: MutationUpdateProfileArgs): Promise<ProfileResponse | null> {
+        let profile = await AdminModel.create({ ...args })
+        let profileDto: ProfileResponse = Object.assign({}, profile.toObject());
+        return profileDto
     }
 }
 

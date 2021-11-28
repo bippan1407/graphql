@@ -5,14 +5,15 @@ import schema from './graphql/schemasMap'
 import { graphqlHTTP } from 'express-graphql'
 import path from 'path'
 import mongoose from 'mongoose'
+import { errorType } from './errorHandling/Constants'
 
 dotenv.config({
   path: path.resolve(__dirname, `../${process.env.NODE_ENV}.env`)
 })
 
-process.once('SIGUSR2', 
-  function () { 
-    process.kill(process.pid, 'SIGUSR2'); 
+process.once('SIGUSR2',
+  function () {
+    process.kill(process.pid, 'SIGUSR2');
   }
 );
 
@@ -21,6 +22,13 @@ const app = express()
 // uncomment to use apollo server
 const server = new ApolloServer({
   schema,
+  formatError: (err) => {
+    const error = (errorName: string) => {
+      return errorType[errorName]
+    }
+    let { message, statusCode } = error(err.message)
+    return ({ message, statusCode })
+  }
 })
 server.applyMiddleware({ app, path: '/graphql' })
 
@@ -40,5 +48,5 @@ mongoose.connection.once('open', () => {
 });
 
 app.listen(PORT, () => {
-  console.log(`\n🚀      GraphQL is now running on http://localhost:${PORT}/graphql`)
+  console.log(`\n🚀🚀🚀        GraphQL is now running on http://localhost:${PORT}/graphql`)
 })
