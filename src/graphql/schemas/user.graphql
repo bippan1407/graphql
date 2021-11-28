@@ -1,18 +1,18 @@
-# extend type Query {
-#   login(email: String!): AuthenticateResponse!
-# }
+extend type Query {
+  profile(id: String): ProfileResponse
+}
 
 extend type Mutation {
   signup(email: String!): SignupResponse!
-  profile(
+  updateProfile(
     firstName: String!
-    lastname: String
+    lastName: String
     email: String!
     contactNumber: Int!
     city: String!
     country: String!
     pincode: Int!
-  ): ProfileResponse!
+  ): ProfileResponse
 }
 
 type SignupResponse {
@@ -20,8 +20,9 @@ type SignupResponse {
 }
 
 type ProfileResponse {
+   _id: ID
   firstName: String!
-  lastname: String
+  lastName: String
   email: String!
   contactNumber: Int!
   city: String!

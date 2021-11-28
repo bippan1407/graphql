@@ -19,19 +19,8 @@ export type Scalars = {
 export type Mutation = {
   __typename?: 'Mutation';
   _empty?: Maybe<Scalars['String']>;
-  profile: ProfileResponse;
   signup: SignupResponse;
-};
-
-
-export type MutationProfileArgs = {
-  city: Scalars['String'];
-  contactNumber: Scalars['Int'];
-  country: Scalars['String'];
-  email: Scalars['String'];
-  firstName: Scalars['String'];
-  lastname?: InputMaybe<Scalars['String']>;
-  pincode: Scalars['Int'];
+  updateProfile?: Maybe<ProfileResponse>;
 };
 
 
@@ -39,20 +28,38 @@ export type MutationSignupArgs = {
   email: Scalars['String'];
 };
 
-export type ProfileResponse = {
-  __typename?: 'ProfileResponse';
+
+export type MutationUpdateProfileArgs = {
   city: Scalars['String'];
   contactNumber: Scalars['Int'];
   country: Scalars['String'];
   email: Scalars['String'];
   firstName: Scalars['String'];
-  lastname?: Maybe<Scalars['String']>;
+  lastName?: InputMaybe<Scalars['String']>;
+  pincode: Scalars['Int'];
+};
+
+export type ProfileResponse = {
+  __typename?: 'ProfileResponse';
+  _id?: Maybe<Scalars['ID']>;
+  city: Scalars['String'];
+  contactNumber: Scalars['Int'];
+  country: Scalars['String'];
+  email: Scalars['String'];
+  firstName: Scalars['String'];
+  lastName?: Maybe<Scalars['String']>;
   pincode?: Maybe<Scalars['Int']>;
 };
 
 export type Query = {
   __typename?: 'Query';
   _empty?: Maybe<Scalars['String']>;
+  profile?: Maybe<ProfileResponse>;
+};
+
+
+export type QueryProfileArgs = {
+  id?: InputMaybe<Scalars['String']>;
 };
 
 export type SignupResponse = {
@@ -130,6 +137,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  ID: ResolverTypeWrapper<Scalars['ID']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   JSON: ResolverTypeWrapper<Scalars['JSON']>;
   JSONObject: ResolverTypeWrapper<Scalars['JSONObject']>;
@@ -143,6 +151,7 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean'];
+  ID: Scalars['ID'];
   Int: Scalars['Int'];
   JSON: Scalars['JSON'];
   JSONObject: Scalars['JSONObject'];
@@ -163,23 +172,25 @@ export interface JsonObjectScalarConfig extends GraphQLScalarTypeConfig<Resolver
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   _empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  profile?: Resolver<ResolversTypes['ProfileResponse'], ParentType, ContextType, RequireFields<MutationProfileArgs, 'city' | 'contactNumber' | 'country' | 'email' | 'firstName' | 'pincode'>>;
   signup?: Resolver<ResolversTypes['SignupResponse'], ParentType, ContextType, RequireFields<MutationSignupArgs, 'email'>>;
+  updateProfile?: Resolver<Maybe<ResolversTypes['ProfileResponse']>, ParentType, ContextType, RequireFields<MutationUpdateProfileArgs, 'city' | 'contactNumber' | 'country' | 'email' | 'firstName' | 'pincode'>>;
 };
 
 export type ProfileResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['ProfileResponse'] = ResolversParentTypes['ProfileResponse']> = {
+  _id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   city?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   contactNumber?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   country?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  lastname?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  lastName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   pincode?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   _empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  profile?: Resolver<Maybe<ResolversTypes['ProfileResponse']>, ParentType, ContextType, RequireFields<QueryProfileArgs, never>>;
 };
 
 export type SignupResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['SignupResponse'] = ResolversParentTypes['SignupResponse']> = {

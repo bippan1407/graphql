@@ -1,31 +1,29 @@
 import { IResolvers } from 'graphql-tools'
-import { MutationProfileArgs, MutationSignupArgs, ProfileResponse, SignupResponse } from '../generated/graphql'
+import AdminService from '../../service/AdminService'
+import { MutationSignupArgs, MutationUpdateProfileArgs, ProfileResponse, QueryProfileArgs, SignupResponse } from '../generated/graphql'
 
 export const UserResolvers: IResolvers = {
-  // Query: {
-  //   async login(_: void, args: QueryLoginArgs): Promise<AuthenticateResponse> {
-  //     return {
-  //       token: "toto"
-  //     }
-  //   }
-  // },
+  Query: {
+    async profile(_: void, args: QueryProfileArgs): Promise<ProfileResponse | null> {
+      let response = await AdminService.getProfile(args)
+      if (!response) {
+        return null
+      }
+      let newObj: ProfileResponse = Object.assign({}, response?.toObject());
+      return newObj
+    }
+  },
   Mutation: {
     async signup(_: void, args: MutationSignupArgs): Promise<SignupResponse> {
       return {
         token: 'token'
       }
     },
-    async profile(_: void, args: MutationProfileArgs): Promise<ProfileResponse> {
-      console.log({_,args})
-      return {
-        city: args.city,
-        contactNumber: args.contactNumber,
-        country: args.country,
-        email: args.email,
-        firstName: args.firstName,
-        lastname: args.lastname,
-        pincode: args.pincode
-      }
+    async updateProfile(_: void, args: MutationUpdateProfileArgs): Promise<ProfileResponse> {
+      console.log({ _, args })
+      let response = await AdminService.createProfile(args)
+      let newObj: ProfileResponse = Object.assign({}, response.toObject());
+      return newObj
     }
   }
 }
