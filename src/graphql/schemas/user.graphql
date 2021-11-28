@@ -1,0 +1,30 @@
+# extend type Query {
+#   login(email: String!): AuthenticateResponse!
+# }
+
+extend type Mutation {
+  signup(email: String!): SignupResponse!
+  profile(
+    firstName: String!
+    lastname: String
+    email: String!
+    contactNumber: Int!
+    city: String!
+    country: String!
+    pincode: Int!
+  ): ProfileResponse!
+}
+
+type SignupResponse {
+  token: String!
+}
+
+type ProfileResponse {
+  firstName: String!
+  lastname: String
+  email: String!
+  contactNumber: Int!
+  city: String!
+  country: String!
+  pincode: Int
+}
