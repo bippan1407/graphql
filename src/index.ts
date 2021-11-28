@@ -19,21 +19,22 @@ process.once('SIGUSR2',
 const app = express()
 
 // uncomment to use apollo server
-// const server = new ApolloServer({
-//   schema,
-// })
-// server.applyMiddleware({ app, path: '/graphql' })
+const server = new ApolloServer({
+  schema,
+})
+server.applyMiddleware({ app, path: '/graphql' })
 
 // express graphql server
-app.use('/graphql', graphqlHTTP({
-  schema,
-  graphiql: true
-}));
+// app.use('/graphql', graphqlHTTP({
+//   schema,
+//   graphiql: true
+// }));
+
 const PORT = process.env.PORT || 4002
 
 console.log(`ENVIRONMENT = ${process.env.NODE_ENV}`)
 
-mongoose.connect('mongodb://127.0.0.1:27017/easymanage')
+mongoose.connect(process.env.DB_HOST as string)
 mongoose.connection.once('open', () => {
   console.log('connected to database');
 });
